@@ -4,6 +4,11 @@ COB is a reusable Terraform-based AWS platform foundation.
 
 The goal of COB is to give engineering teams common AWS infrastructure that follows the same basic standards without every team having to build the infrastructure from scratch.
 
+## Architecture Diagram
+<img width="1422" height="1002" alt="architecture" src="https://github.com/user-attachments/assets/edab2c20-e3a5-44b4-a2a0-1b1445e4d431" />
+
+
+
 ## Capabilities
 
 The first version of COB provides reusable modules for:
