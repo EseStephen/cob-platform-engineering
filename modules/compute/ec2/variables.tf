@@ -1,5 +1,5 @@
 variable "project" {
-  description = "Name of the project or application."
+  description = "name of the project or application."
   type        = string
 }
 

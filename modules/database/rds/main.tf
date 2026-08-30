@@ -6,7 +6,7 @@ locals {
   }
 }
 
-# Places the database in COB private subnets
+# this places the database in COB private subnets
 resource "aws_db_subnet_group" "this" {
   name = "${var.project}-${var.environment}-db-subnet-group"
 
@@ -34,7 +34,7 @@ resource "aws_security_group" "this" {
   )
 }
 
-# Only the approved application security group can access PostgreSQL
+# only the approved application security group can access PostgreSQL
 resource "aws_vpc_security_group_ingress_rule" "postgres" {
   security_group_id            = aws_security_group.this.id
   referenced_security_group_id = var.allowed_security_group_id
@@ -44,7 +44,7 @@ resource "aws_vpc_security_group_ingress_rule" "postgres" {
   ip_protocol = "tcp"
 }
 
-# Allow outbound traffic from the database
+# allow outbound traffic from the database
 resource "aws_vpc_security_group_egress_rule" "this" {
   security_group_id = aws_security_group.this.id
 
@@ -52,7 +52,7 @@ resource "aws_vpc_security_group_egress_rule" "this" {
   ip_protocol = "-1"
 }
 
-# Managed PostgreSQL database
+# PostgreSQL database
 resource "aws_db_instance" "this" {
   identifier = "${var.project}-${var.environment}-postgres"
 

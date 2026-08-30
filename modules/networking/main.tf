@@ -11,7 +11,7 @@ locals {
   }
 }
 
-# Standard COB VPC
+# standard COB VPC
 resource "aws_vpc" "this" {
   cidr_block = var.vpc_cidr
 
@@ -26,7 +26,7 @@ resource "aws_vpc" "this" {
   )
 }
 
-# Public subnets across two Availability Zones
+# public subnets across two availability zones
 resource "aws_subnet" "public" {
   count = 2
 
@@ -51,7 +51,7 @@ resource "aws_subnet" "public" {
   )
 }
 
-# Private subnets across two Availability Zones
+# private subnets across two availability zones
 resource "aws_subnet" "private" {
   count = 2
 
@@ -76,7 +76,7 @@ resource "aws_subnet" "private" {
   )
 }
 
-# Allows public subnets to communicate with the internet
+# this allows public subnets to communicate with the internet
 resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
@@ -88,7 +88,7 @@ resource "aws_internet_gateway" "this" {
   )
 }
 
-# Routing table for public subnets
+# routing table for public subnets
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
 
@@ -105,7 +105,7 @@ resource "aws_route_table" "public" {
   )
 }
 
-# Connect the public subnets to the public routing table
+# connect the public subnets to the public routing table
 resource "aws_route_table_association" "public" {
   count = 2
 
@@ -113,7 +113,7 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# Create an Elastic IP only when NAT is requested
+# create an elastic IP only when NAT is requested
 resource "aws_eip" "nat" {
   count = var.enable_nat_gateway ? 1 : 0
 
@@ -129,7 +129,7 @@ resource "aws_eip" "nat" {
   depends_on = [aws_internet_gateway.this]
 }
 
-# Optional NAT Gateway for outbound access from private subnets
+# optional NAT Gateway for outbound access from private subnets
 resource "aws_nat_gateway" "this" {
   count = var.enable_nat_gateway ? 1 : 0
 
@@ -146,7 +146,7 @@ resource "aws_nat_gateway" "this" {
   depends_on = [aws_internet_gateway.this]
 }
 
-# Routing table used by private subnets
+# routing table used by private subnets
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
 
@@ -167,7 +167,7 @@ resource "aws_route_table" "private" {
   )
 }
 
-# Connect private subnets to their routing table
+# connect private subnets to their routing table
 resource "aws_route_table_association" "private" {
   count = 2
 

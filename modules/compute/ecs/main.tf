@@ -9,7 +9,7 @@ locals {
   service_name = "${var.project}-${var.environment}-service"
 }
 
-# ECS cluster
+# teh ecs cluster
 resource "aws_ecs_cluster" "this" {
   name = local.cluster_name
 
@@ -21,7 +21,7 @@ resource "aws_ecs_cluster" "this" {
   tags = local.common_tags
 }
 
-# CloudWatch log group for container logs
+# cloudWatch log group for container logs
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/cob/ecs/${var.project}/${var.environment}"
   retention_in_days = 7
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_log_group" "this" {
   tags = local.common_tags
 }
 
-# IAM role used by ECS/Fargate to pull images and write logs
+# iam role used by ECS or Fargate to pull images and write the logs
 data "aws_iam_policy_document" "execution_assume_role" {
   statement {
     effect = "Allow"
@@ -61,7 +61,7 @@ resource "aws_iam_role_policy_attachment" "execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# Security group for the ECS service
+# security group for the ecs service
 resource "aws_security_group" "this" {
   name        = "${var.project}-${var.environment}-ecs-sg"
   description = "COB security group for ECS service"
@@ -75,7 +75,7 @@ resource "aws_security_group" "this" {
   )
 }
 
-# Only create ingress rules that the consumer explicitly requests
+# only create ingress rules that the consumer explicitly requests
 resource "aws_vpc_security_group_ingress_rule" "this" {
   for_each = toset(var.allowed_ingress_cidr)
 
@@ -87,7 +87,7 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
   ip_protocol = "tcp"
 }
 
-# Allow outbound traffic required by the workload
+# allow outbound traffic required by the workload
 resource "aws_vpc_security_group_egress_rule" "this" {
   security_group_id = aws_security_group.this.id
 
@@ -95,7 +95,7 @@ resource "aws_vpc_security_group_egress_rule" "this" {
   ip_protocol = "-1"
 }
 
-# Fargate task definition
+# fargate task definition
 resource "aws_ecs_task_definition" "this" {
   family = "${var.project}-${var.environment}-task"
 
@@ -145,7 +145,7 @@ resource "aws_ecs_task_definition" "this" {
 
 data "aws_region" "current" {}
 
-# ECS service
+# ecs service
 resource "aws_ecs_service" "this" {
   name            = local.service_name
   cluster         = aws_ecs_cluster.this.id
@@ -161,7 +161,7 @@ resource "aws_ecs_service" "this" {
       aws_security_group.this.id
     ]
 
-    # COB workloads use private subnets by default
+    # this ensures COB workloads use private subnets by default
     assign_public_ip = false
   }
 

@@ -8,7 +8,7 @@ locals {
   role_name = "${var.project}-${var.environment}-${var.workload_name}-role"
 }
 
-# Defines which AWS service is allowed to assume this role
+# this defines which AWS service is allowed to assume this role
 data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-# Creates the least-privilege permissions requested by the workload
+# this creates the least-privilege permissions requested by the workload
 data "aws_iam_policy_document" "permissions" {
   statement {
     effect = "Allow"
@@ -61,7 +61,7 @@ resource "aws_iam_role_policy_attachment" "this" {
   policy_arn = aws_iam_policy.this.arn
 }
 
-# EC2 requires an instance profile to use an IAM role
+# the ec2 requires an instance profile to use an IAM role
 resource "aws_iam_instance_profile" "this" {
   count = var.create_instance_profile ? 1 : 0
 

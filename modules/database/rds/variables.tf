@@ -41,7 +41,7 @@ variable "instance_class" {
 }
 
 variable "allocated_storage" {
-  description = "Initial database storage in GiB."
+  description = "Initial database storage in GB."
   type        = number
   default     = 20
 }
@@ -64,7 +64,7 @@ variable "allowed_security_group_id" {
 }
 
 variable "multi_az" {
-  description = "Whether to deploy the database using Multi-AZ."
+  description = "choose to deploy the database using Multi-AZ."
   type        = bool
   default     = false
 }

@@ -1,10 +1,10 @@
 output "instance_id" {
-  description = "ID of the EC2 instance."
+  description = "ID of the ec2 instance."
   value       = aws_instance.this.id
 }
 
 output "private_ip" {
-  description = "Private IP address of the EC2 instance."
+  description = "Private IP address of the ec2 instance."
   value       = aws_instance.this.private_ip
 }
 

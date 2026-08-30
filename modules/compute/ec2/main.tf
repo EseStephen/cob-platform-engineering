@@ -6,10 +6,10 @@ locals {
   }
 }
 
-# Security group for the EC2 workload
+# the security group for the ec2 workload
 resource "aws_security_group" "this" {
   name        = "${var.project}-${var.environment}-ec2-sg"
-  description = "COB security group for EC2 workload"
+  description = "security group for ec2"
   vpc_id      = var.vpc_id
 
   tags = merge(
@@ -20,7 +20,7 @@ resource "aws_security_group" "this" {
   )
 }
 
-# Only create ingress rules when the consumer explicitly provides them
+# create the ingress rules when consumer explicitly provides them
 resource "aws_vpc_security_group_ingress_rule" "this" {
   for_each = toset(var.allowed_ingress_cidr)
 
@@ -32,7 +32,7 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
   ip_protocol = "tcp"
 }
 
-# Allow outbound traffic
+# this allows outbound traffic
 resource "aws_vpc_security_group_egress_rule" "this" {
   security_group_id = aws_security_group.this.id
 
@@ -40,7 +40,7 @@ resource "aws_vpc_security_group_egress_rule" "this" {
   ip_protocol = "-1"
 }
 
-# EC2 workload
+# ec2 workload
 resource "aws_instance" "this" {
   ami           = var.ami_id
   instance_type = var.instance_type
